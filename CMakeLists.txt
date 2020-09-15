@@ -9,7 +9,7 @@ endif()
 
 project(monero-seed)
 
-add_executable(${PROJECT_NAME}
+add_library(${PROJECT_NAME}
 src/argon2/blake2/blake2b.c
 src/argon2/argon2.c
 src/argon2/core.c
@@ -17,7 +17,6 @@ src/argon2/ref.c
 src/galois_field.cpp
 src/gf_elem.cpp
 src/gf_poly.cpp
-src/main.cpp
 src/monero_seed.cpp
 src/pbkdf2.c
 src/reed_solomon_code.cpp
@@ -25,3 +24,4 @@ src/secure_random.cpp
 src/wordlist.cpp)
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
+target_include_directories(${PROJECT_NAME} PUBLIC src)
