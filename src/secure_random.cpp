@@ -66,9 +66,11 @@ void secure_random::gen_bytes(void* output, size_t size) {
 	while (size) {
 		ssize_t len = read(fd, outptr, size);
 		if (len < 0) {
+#ifndef __APPLE__
 			if (errno != EINTR && errno != EAGAIN) {
 				break;
 			}
+#endif
 			continue;
 		}
 		outptr += len;
