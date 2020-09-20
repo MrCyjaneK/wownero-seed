@@ -3,7 +3,7 @@
 	All rights reserved.
 */
 
-#include "galois_field.hpp"
+#include <monero_seed/galois_field.hpp>
 
 template<unsigned bits, gf_item primitive>
 galois_field<bits, primitive>::galois_field() {

@@ -3,11 +3,11 @@
 	All rights reserved.
 */
 
-#include "monero_seed.hpp"
-#include "secure_random.hpp"
-#include "wordlist.hpp"
-#include "gf_poly.hpp"
-#include "reed_solomon_code.hpp"
+#include <monero_seed/monero_seed.hpp>
+#include <monero_seed/secure_random.hpp>
+#include <monero_seed/wordlist.hpp>
+#include <monero_seed/gf_poly.hpp>
+#include <monero_seed/reed_solomon_code.hpp>
 #include "argon2/argon2.h"
 #include "argon2/blake2/blake2-impl.h"
 #include "pbkdf2.h"

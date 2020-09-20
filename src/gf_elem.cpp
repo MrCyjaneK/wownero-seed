@@ -3,6 +3,6 @@
 	All rights reserved.
 */
 
-#include "gf_elem.hpp"
+#include <monero_seed/gf_elem.hpp>
 
 const gf_2048 gf_elem::field;
