@@ -59,9 +59,11 @@ constexpr int pbkdf2_iterations = 4096;
 
 static const std::string COIN_MONERO = "monero";
 static const std::string COIN_AEON = "aeon";
+static const std::string COIN_WOWNERO = "wownero";
 
 constexpr gf_elem monero_flag = gf_elem(0x539);
 constexpr gf_elem aeon_flag = gf_elem(0x201);
+constexpr gf_elem wownero_flag = gf_elem(0x1a4);
 
 static const char* KDF_PBKDF2 = "PBKDF2-HMAC-SHA256/4096";
 
@@ -104,6 +106,9 @@ static gf_elem get_coin_flag(const std::string& coin) {
 	}
 	else if (coin == COIN_AEON) {
 		return aeon_flag;
+	}
+	else if (coin == COIN_WOWNERO) {
+		return wownero_flag;
 	}
 	else {
 		THROW_EXCEPTION("invalid coin");
