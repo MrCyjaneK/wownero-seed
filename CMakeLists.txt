@@ -2,6 +2,8 @@
 
 cmake_minimum_required(VERSION 3.13)
 
+option(MONERO_SEED_DEMO "Build a demo executable for monero-seed")
+
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
   message(STATUS "Setting default build type: ${CMAKE_BUILD_TYPE}")
@@ -29,6 +31,12 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/monero_seed>)
+
+if(MONERO_SEED_DEMO)
+  add_executable(demo src/main.cpp)
+  set_property(TARGET demo PROPERTY CXX_STANDARD 11)
+  target_link_libraries(demo -Wl,--whole-archive ${PROJECT_NAME} -Wl,--no-whole-archive)
+endif()
 
 install(TARGETS ${PROJECT_NAME}
   EXPORT ${PROJECT_NAME}

@@ -3,7 +3,7 @@
 	All rights reserved.
 */
 
-#include "monero_seed.hpp"
+#include <monero_seed/monero_seed.hpp>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
