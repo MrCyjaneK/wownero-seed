@@ -11,7 +11,7 @@
 	#define WINAPI
 	#include <windows.h>
 	#include <ntsecapi.h>
-#elif defined __linux__ && defined __GLIBC__
+#elif defined __linux__ && defined __GLIBC__ || __ANDROID__
 	#define STRINGIFY(x) #x
 	#define STR(x) STRINGIFY(x)
 	#if __GLIBC__ > 2 || __GLIBC_MINOR__ > 24
