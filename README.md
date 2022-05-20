@@ -1,7 +1,7 @@
 ## Build
 ```
-git clone https://github.com/tevador/monero-seed.git
-cd monero-seed
+git clone https://git.wownero.com/wowlet/wownero-seed.git
+cd wownero-seed
 mkdir build && cd build
 cmake ..
 make
@@ -19,35 +19,35 @@ make
 ### Create a new seed
 
 ```
-> ./monero-seed --create [--date <yyyy-MM-dd>] [--coin <monero|aeon>]
+> ./wownero-seed --create [--date <yyyy-MM-dd>] [--coin <monero|aeon>]
 ```
 
 Example:
 ```
-> ./monero-seed --create --date 2100/03/14 --coin monero
+> ./wownero-seed --create --date 2100/03/14 --coin monero
 Mnemonic phrase: test park taste security oxygen decorate essence ridge ship fish vehicle dream fluid pattern
-- coin: monero
+- coin: wownero
 - private key: 7b816d8134e29393b0333eed4b6ed6edf97c156ad139055a706a6fb9599dcf8c
 - created on or after: 02/Mar/2100
 ```
 
 ### Restore seed
 ```
-./monero-seed --restore "<14-word seed>" [--coin <monero|aeon>]
+./wownero-seed --restore "<14-word seed>" [--coin <monero|aeon>]
 ```
 
 Example:
 
 ```
-> ./monero-seed --restore "test park taste security oxygen decorate essence ridge ship fish vehicle dream fluid pattern" --coin monero
-- coin: monero
+> ./wownero-seed --restore "test park taste security oxygen decorate essence ridge ship fish vehicle dream fluid pattern" --coin monero
+- coin: wownero
 - private key: 7b816d8134e29393b0333eed4b6ed6edf97c156ad139055a706a6fb9599dcf8c
 - created on or after: 02/Mar/2100
 ```
 
 Attempting to restore the same seed under a different coin will fail:
 ```
-> ./monero-seed --restore "test park taste security oxygen decorate essence ridge ship fish vehicle dream fluid pattern" --coin aeon
+> ./wownero-seed --restore "test park taste security oxygen decorate essence ridge ship fish vehicle dream fluid pattern" --coin aeon
 ERROR: phrase is invalid (checksum mismatch)
 ```
 
@@ -55,9 +55,9 @@ Restore has limited error correction capability, namely it can correct a single 
 This can be tested by replacing a word with `xxxx`:
 
 ```
-> ./monero-seed --restore "test park xxxx security oxygen decorate essence ridge ship fish vehicle dream fluid pattern" --coin monero
+> ./wownero-seed --restore "test park xxxx security oxygen decorate essence ridge ship fish vehicle dream fluid pattern" --coin monero
 Warning: corrected erasure: xxxx -> taste
-- coin: monero
+- coin: wownero
 - private key: 7b816d8134e29393b0333eed4b6ed6edf97c156ad139055a706a6fb9599dcf8c
 - created on or after: 02/Mar/2100
 ```

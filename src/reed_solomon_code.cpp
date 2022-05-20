@@ -3,7 +3,7 @@
 	All rights reserved.
 */
 
-#include <monero_seed/reed_solomon_code.hpp>
+#include <wownero_seed/reed_solomon_code.hpp>
 #include <cassert>
 
 reed_solomon_code::reed_solomon_code(unsigned check_digits) : generator(1, 0) {
