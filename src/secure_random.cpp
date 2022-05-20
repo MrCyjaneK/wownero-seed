@@ -3,7 +3,7 @@
 	All rights reserved.
 */
 
-#include <monero_seed/secure_random.hpp>
+#include <wownero_seed/secure_random.hpp>
 #include <stdexcept>
 #include <cstdlib>
 

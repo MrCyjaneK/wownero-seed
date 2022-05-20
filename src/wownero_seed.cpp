@@ -3,11 +3,11 @@
 	All rights reserved.
 */
 
-#include <monero_seed/monero_seed.hpp>
-#include <monero_seed/secure_random.hpp>
-#include <monero_seed/wordlist.hpp>
-#include <monero_seed/gf_poly.hpp>
-#include <monero_seed/reed_solomon_code.hpp>
+#include <wownero_seed/wownero_seed.hpp>
+#include <wownero_seed/secure_random.hpp>
+#include <wownero_seed/wordlist.hpp>
+#include <wownero_seed/gf_poly.hpp>
+#include <wownero_seed/reed_solomon_code.hpp>
 #include "argon2/argon2.h"
 #include "argon2/blake2/blake2-impl.h"
 #include "pbkdf2.h"
@@ -20,14 +20,14 @@
 #include <sstream>
 #include <algorithm>
 
-const std::string monero_seed::erasure = "xxxx";
+const std::string wownero_seed::erasure = "xxxx";
 
-class monero_seed_exception : public std::exception {
+class wownero_seed_exception : public std::exception {
 public:
-	monero_seed_exception(const std::string& msg)
+	wownero_seed_exception(const std::string& msg)
 		: msg_(msg)
 	{ }
-	~monero_seed_exception() throw() {}
+	~wownero_seed_exception() throw() {}
 
 	const char* what() const throw() override {
 		return msg_.c_str();
@@ -39,7 +39,7 @@ private:
 #define THROW_EXCEPTION(message) do { \
 		std::ostringstream oss; \
 		oss << message; \
-		throw monero_seed_exception(oss.str()); } \
+		throw wownero_seed_exception(oss.str()); } \
 	while(false)
 
 constexpr std::time_t epoch = 1590969600; //1st June 2020
@@ -69,7 +69,7 @@ static const char* KDF_PBKDF2 = "PBKDF2-HMAC-SHA256/4096";
 
 static_assert(total_bits
 	== reserved_bits + date_bits + checksum_size +
-	sizeof(monero_seed::secret_seed) * CHAR_BIT,
+	sizeof(wownero_seed::secret_seed) * CHAR_BIT,
 	"Invalid mnemonic seed size");
 
 static void write_data(gf_poly& poly, unsigned& rem_bits, unsigned value, unsigned bits) {
@@ -117,7 +117,7 @@ static gf_elem get_coin_flag(const std::string& coin) {
 
 static const reed_solomon_code rs(check_digits);
 
-monero_seed::monero_seed(std::time_t date_created, const std::string& coin) {
+wownero_seed::wownero_seed(std::time_t date_created, const std::string& coin) {
 	if (date_created < epoch) {
 		THROW_EXCEPTION("date_created must not be before 1st June 2020");
 	}
@@ -142,7 +142,7 @@ monero_seed::monero_seed(std::time_t date_created, const std::string& coin) {
 	message_[check_digits] -= coin_flag;
 }
 
-monero_seed::monero_seed(const std::string& phrase, const std::string& coin) {
+wownero_seed::wownero_seed(const std::string& phrase, const std::string& coin) {
 	gf_elem coin_flag = get_coin_flag(coin);
 	int word_count = 0;
 	size_t offset = 0;
@@ -222,7 +222,7 @@ monero_seed::monero_seed(const std::string& phrase, const std::string& coin) {
 	pbkdf2_hmac_sha256(seed_.data(), seed_.size(), salt, sizeof(salt), pbkdf2_iterations, key_.data(), key_.size());
 }
 
-std::ostream& operator<<(std::ostream& os, const monero_seed& seed) {
+std::ostream& operator<<(std::ostream& os, const wownero_seed& seed) {
 	for (int i = 0; i <= seed.message_.degree(); ++i) {
 		if (i > 0) {
 			os << " ";
@@ -232,7 +232,7 @@ std::ostream& operator<<(std::ostream& os, const monero_seed& seed) {
 	return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const monero_seed::secret_key& key) {
+std::ostream& operator<<(std::ostream& os, const wownero_seed::secret_key& key) {
 	os << std::hex;
 	for (int i = 0; i < key.size(); ++i) {
 		os << std::setw(2) << std::setfill('0') << (unsigned)key[i];

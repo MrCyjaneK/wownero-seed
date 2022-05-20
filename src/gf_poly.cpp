@@ -3,7 +3,7 @@
 	All rights reserved.
 */
 
-#include <monero_seed/gf_poly.hpp>
+#include <wownero_seed/gf_poly.hpp>
 
 gf_poly::gf_poly(gf_elem coeff, unsigned degree) : degree_(0) {
 	coeff_[degree] = coeff;

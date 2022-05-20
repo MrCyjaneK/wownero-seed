@@ -3,7 +3,7 @@
 	All rights reserved.
 */
 
-#include <monero_seed/monero_seed.hpp>
+#include <wownero_seed/wownero_seed.hpp>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -51,9 +51,9 @@ static time_t parse_date(const char* s) {
 	throw std::runtime_error("invalid date");
 }
 
-void print_seed(const monero_seed& seed, const char* coin, bool phrase) {
+void print_seed(const wownero_seed& seed, const char* coin, bool phrase) {
 	if (!seed.correction().empty()) {
-		std::cout << "Warning: corrected erasure: " << monero_seed::erasure << " -> " << seed.correction() << std::endl;
+		std::cout << "Warning: corrected erasure: " << wownero_seed::erasure << " -> " << seed.correction() << std::endl;
 	}
 	if (phrase) {
 		std::cout << "Mnemonic phrase: " << seed << std::endl;
@@ -72,7 +72,7 @@ int main(int argc, const char* argv[]) {
 	const char* restore;
 	read_option("--create", argc, argv, create);
 	read_string_option("--date", argc, argv, &create_date);
-	read_string_option("--coin", argc, argv, &coin, "monero");
+	read_string_option("--coin", argc, argv, &coin, "wownero");
 	read_string_option("--restore", argc, argv, &restore);
 
 	try {
@@ -84,15 +84,15 @@ int main(int argc, const char* argv[]) {
 			else {
 				time = std::time(nullptr);
 			}
-			monero_seed seed(time, coin);
+			wownero_seed seed(time, coin);
 			print_seed(seed, coin, true);
 		}
 		else if (restore != nullptr) {
-			monero_seed seed(restore, coin);
+			wownero_seed seed(restore, coin);
 			print_seed(seed, coin, false);
 		}
 		else {
-			std::cout << "Monero 14-word mnemonic seed proof of concept" << std::endl;
+			std::cout << "14-word mnemonic seed" << std::endl;
 			std::cout << "Usage: " << std::endl;
 			std::cout << argv[0] << " --create [--date <yyyy-MM-dd>] [--coin <monero|aeon|wownero>]" << std::endl;
 			std::cout << argv[0] << " --restore \"<14-word seed>\" [--coin <monero|aeon|wownero>]" << std::endl;

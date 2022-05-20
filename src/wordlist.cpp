@@ -3,7 +3,7 @@
 	All rights reserved.
 */
 
-#include <monero_seed/wordlist.hpp>
+#include <wownero_seed/wordlist.hpp>
 #include <algorithm>
 
 const static std::string english_words[] = {
