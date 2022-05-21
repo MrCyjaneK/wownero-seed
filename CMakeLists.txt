@@ -21,6 +21,7 @@ src/argon2/ref.c
 src/galois_field.cpp
 src/gf_elem.cpp
 src/gf_poly.cpp
+src/heights.cpp
 src/wownero_seed.cpp
 src/pbkdf2.c
 src/reed_solomon_code.cpp

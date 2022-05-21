@@ -23,6 +23,7 @@ public:
 	std::time_t date() const {
 		return date_;
 	}
+    unsigned blockheight() const;
 	const std::string& correction() const {
 		return correction_;
 	}
