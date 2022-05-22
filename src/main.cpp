@@ -63,6 +63,7 @@ void print_seed(const wownero_seed& seed, const char* coin, bool phrase) {
 	auto created_on = seed.date();
 	std::tm tm = *std::localtime(&created_on);
 	std::cout << "- created on or after: " << std::put_time(&tm, "%d/%b/%Y") << std::endl;
+    std::cout << "- blockheight: " << seed.blockheight() << std::endl;
 }
 
 int main(int argc, const char* argv[]) {

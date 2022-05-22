@@ -8,6 +8,7 @@
 #include <wownero_seed/wordlist.hpp>
 #include <wownero_seed/gf_poly.hpp>
 #include <wownero_seed/reed_solomon_code.hpp>
+#include <wownero_seed/heights.hpp>
 #include "argon2/argon2.h"
 #include "argon2/blake2/blake2-impl.h"
 #include "pbkdf2.h"
@@ -220,6 +221,10 @@ wownero_seed::wownero_seed(const std::string& phrase, const std::string& coin) {
 	store32(salt + 21, quantized_date);
 	//argon2id_hash_raw(argon_tcost, argon_mcost, 1, seed_.data(), seed_.size(), salt, sizeof(salt), key_.data(), key_.size());
 	pbkdf2_hmac_sha256(seed_.data(), seed_.size(), salt, sizeof(salt), pbkdf2_iterations, key_.data(), key_.size());
+}
+
+unsigned wownero_seed::blockheight() const {
+    return dateToRestoreHeight(this->date());
 }
 
 std::ostream& operator<<(std::ostream& os, const wownero_seed& seed) {
