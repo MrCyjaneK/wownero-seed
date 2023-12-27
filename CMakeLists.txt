@@ -36,7 +36,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 if(WOWNERO_SEED_DEMO)
   add_executable(demo src/main.cpp)
   set_property(TARGET demo PROPERTY CXX_STANDARD 11)
-  target_link_libraries(demo -Wl,--whole-archive ${PROJECT_NAME} -Wl,--no-whole-archive)
+  target_link_libraries(demo ${PROJECT_NAME})
 endif()
 
 install(TARGETS ${PROJECT_NAME}

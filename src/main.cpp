@@ -4,6 +4,7 @@
 */
 
 #include <wownero_seed/wownero_seed.hpp>
+#include <wownero_seed/gf_elem.hpp>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -85,6 +86,14 @@ int main(int argc, const char* argv[]) {
 			else {
 				time = std::time(nullptr);
 			}
+
+      // https://stackoverflow.com/questions/57766620/cmake-add-library-doesnt-initialize-static-global-variable
+      // Silly CMake hack so that gf_elem.hpp is 'properly included' during compile, needs to happen before wownero_seed.hpp is called
+      // previously solved with --whole-archive
+      auto *prime = new gf_elem(1);
+      prime->inverse();
+      std::free(prime);
+
 			wownero_seed seed(time, coin);
 			print_seed(seed, coin, true);
 		}
