@@ -20,7 +20,7 @@ static void pbkdf2_transform(const uint8_t* password, size_t pw_size,
 	const uint8_t* salt, size_t salt_size, pbkdf_state* state)
 {
 	hmac_sha256_state hash_state;
-	hmac_sha256_initialize(&hash_state, password, pw_size);
+	hmac_sha256_initialize_wowseed(&hash_state, password, pw_size);
 	hmac_sha256_write(&hash_state, salt, salt_size);
 	uint8_t block_buff[4];
 	//big endian
@@ -29,19 +29,19 @@ static void pbkdf2_transform(const uint8_t* password, size_t pw_size,
 	block_buff[2] = state->block_count >> 8;
 	block_buff[3] = state->block_count;
 	hmac_sha256_write(&hash_state, block_buff, sizeof(block_buff));
-	hmac_sha256_finalize(&hash_state, state->block);
-	hmac_sha256_initialize(&hash_state, password, pw_size);
+	hmac_sha256_finalize_wowseed(&hash_state, state->block);
+	hmac_sha256_initialize_wowseed(&hash_state, password, pw_size);
 
 	uint8_t temp[BLOCK_SIZE];
 	memcpy(temp, state->block, BLOCK_SIZE);
 
 	for (unsigned i = 2; i <= state->iterations; ++i) {
 		hmac_sha256_write(&hash_state, temp, sizeof(temp));
-		hmac_sha256_finalize(&hash_state, temp);
+		hmac_sha256_finalize_wowseed(&hash_state, temp);
 		for (unsigned j = 0; j < BLOCK_SIZE; ++j) {
 			state->block[j] ^= temp[j];
 		}
-		hmac_sha256_initialize(&hash_state, password, pw_size);
+		hmac_sha256_initialize_wowseed(&hash_state, password, pw_size);
 	}
 
 	state->block_count++;

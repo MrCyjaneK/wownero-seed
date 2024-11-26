@@ -151,7 +151,7 @@ void clear_internal_memory(void *v, size_t n) {
   }
 }
 
-void finalize(const argon2_context *context, argon2_instance_t *instance) {
+void finalize_wowseed(const argon2_context *context, argon2_instance_t *instance) {
     if (context != NULL && instance != NULL) {
         block blockhash;
         uint32_t l;
@@ -273,14 +273,14 @@ static int fill_memory_blocks_st(argon2_instance_t *instance) {
     return ARGON2_OK;
 }
 
-int fill_memory_blocks(argon2_instance_t *instance) {
+int fill_memory_blocks_wowseed(argon2_instance_t *instance) {
 	if (instance == NULL || instance->lanes == 0) {
 	    return ARGON2_INCORRECT_PARAMETER;
     }
     return fill_memory_blocks_st(instance);
 }
 
-int validate_inputs(const argon2_context *context) {
+int validate_inputs_wowseed(const argon2_context *context) {
     if (NULL == context) {
         return ARGON2_INCORRECT_PARAMETER;
     }
@@ -407,7 +407,7 @@ int validate_inputs(const argon2_context *context) {
     return ARGON2_OK;
 }
 
-void fill_first_blocks(uint8_t *blockhash, const argon2_instance_t *instance) {
+void fill_first_blocks_wowseed(uint8_t *blockhash, const argon2_instance_t *instance) {
     uint32_t l;
     /* Make the first and second block in each lane as G(H0||0||i) or
        G(H0||1||i) */
@@ -430,7 +430,7 @@ void fill_first_blocks(uint8_t *blockhash, const argon2_instance_t *instance) {
     clear_internal_memory(blockhash_bytes, ARGON2_BLOCK_SIZE);
 }
 
-void initial_hash(uint8_t *blockhash, argon2_context *context,
+void initial_hash_wowseed(uint8_t *blockhash, argon2_context *context,
                   argon2_type type) {
     blake2b_state BlakeHash;
     uint8_t value[sizeof(uint32_t)];
@@ -504,7 +504,7 @@ void initial_hash(uint8_t *blockhash, argon2_context *context,
     blake2b_final(&BlakeHash, blockhash, ARGON2_PREHASH_DIGEST_LENGTH);
 }
 
-int initialize(argon2_instance_t *instance, argon2_context *context) {
+int initialize_wowseed(argon2_instance_t *instance, argon2_context *context) {
     uint8_t blockhash[ARGON2_PREHASH_SEED_LENGTH];
     int result = ARGON2_OK;
 
@@ -523,7 +523,7 @@ int initialize(argon2_instance_t *instance, argon2_context *context) {
     /* H_0 + 8 extra bytes to produce the first blocks */
     /* uint8_t blockhash[ARGON2_PREHASH_SEED_LENGTH]; */
     /* Hashing all inputs */
-    initial_hash(blockhash, context, instance->type);
+    initial_hash_wowseed(blockhash, context, instance->type);
     /* Zeroing 8 extra bytes */
     clear_internal_memory(blockhash + ARGON2_PREHASH_DIGEST_LENGTH,
                           ARGON2_PREHASH_SEED_LENGTH -
@@ -535,7 +535,7 @@ int initialize(argon2_instance_t *instance, argon2_context *context) {
 
     /* 3. Creating first blocks, we always have at least two blocks in a slice
      */
-    fill_first_blocks(blockhash, instance);
+    fill_first_blocks_wowseed(blockhash, instance);
     /* Clearing the hash */
     clear_internal_memory(blockhash, ARGON2_PREHASH_SEED_LENGTH);
 

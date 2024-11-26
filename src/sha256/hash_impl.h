@@ -17,17 +17,17 @@ typedef struct {
     size_t bytes;
 } sha256_state;
 
-static void sha256_initialize(sha256_state* hash);
+static void sha256_initialize_wowseed(sha256_state* hash);
 static void sha256_write(sha256_state* hash, const uint8_t* data, size_t size);
-static void sha256_finalize(sha256_state* hash, uint8_t* out32);
+static void sha256_finalize_wowseed(sha256_state* hash, uint8_t* out32);
 
 typedef struct {
     sha256_state inner, outer;
 } hmac_sha256_state;
 
-static void hmac_sha256_initialize(hmac_sha256_state* hash, const uint8_t* key, size_t size);
+static void hmac_sha256_initialize_wowseed(hmac_sha256_state* hash, const uint8_t* key, size_t size);
 static void hmac_sha256_write(hmac_sha256_state* hash, const uint8_t* data, size_t size);
-static void hmac_sha256_finalize(hmac_sha256_state* hash, uint8_t* out32);
+static void hmac_sha256_finalize_wowseed(hmac_sha256_state* hash, uint8_t* out32);
 
 #define Ch(x,y,z) ((z) ^ ((x) & ((y) ^ (z))))
 #define Maj(x,y,z) (((x) & (y)) | ((z) & ((x) | (y))))
@@ -45,7 +45,7 @@ static void hmac_sha256_finalize(hmac_sha256_state* hash, uint8_t* out32);
 
 #define BE32(p) ((((p) & 0xFF) << 24) | (((p) & 0xFF00) << 8) | (((p) & 0xFF0000) >> 8) | (((p) & 0xFF000000) >> 24))
 
-static void sha256_initialize(sha256_state *hash) {
+static void sha256_initialize_wowseed(sha256_state *hash) {
     hash->s[0] = 0x6a09e667ul;
     hash->s[1] = 0xbb67ae85ul;
     hash->s[2] = 0x3c6ef372ul;
@@ -157,7 +157,7 @@ static void sha256_write(sha256_state *hash, const uint8_t *data, size_t len) {
     }
 }
 
-static void sha256_finalize(sha256_state *hash, uint8_t *out32) {
+static void sha256_finalize_wowseed(sha256_state *hash, uint8_t *out32) {
     static const uint8_t pad[64] = {0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     uint32_t sizedesc[2];
     uint32_t out[8];
@@ -173,7 +173,7 @@ static void sha256_finalize(sha256_state *hash, uint8_t *out32) {
     memcpy(out32, (const uint8_t*)out, 32);
 }
 
-static void hmac_sha256_initialize(hmac_sha256_state *hash, const uint8_t *key, size_t keylen) {
+static void hmac_sha256_initialize_wowseed(hmac_sha256_state *hash, const uint8_t *key, size_t keylen) {
     int n;
     uint8_t rkey[64];
     if (keylen <= 64) {
@@ -181,19 +181,19 @@ static void hmac_sha256_initialize(hmac_sha256_state *hash, const uint8_t *key, 
         memset(rkey + keylen, 0, 64 - keylen);
     } else {
         sha256_state sha256;
-        sha256_initialize(&sha256);
+        sha256_initialize_wowseed(&sha256);
         sha256_write(&sha256, key, keylen);
-        sha256_finalize(&sha256, rkey);
+        sha256_finalize_wowseed(&sha256, rkey);
         memset(rkey + 32, 0, 32);
     }
 
-    sha256_initialize(&hash->outer);
+    sha256_initialize_wowseed(&hash->outer);
     for (n = 0; n < 64; n++) {
         rkey[n] ^= 0x5c;
     }
     sha256_write(&hash->outer, rkey, 64);
 
-    sha256_initialize(&hash->inner);
+    sha256_initialize_wowseed(&hash->inner);
     for (n = 0; n < 64; n++) {
         rkey[n] ^= 0x5c ^ 0x36;
     }
@@ -205,12 +205,12 @@ static void hmac_sha256_write(hmac_sha256_state *hash, const uint8_t *data, size
     sha256_write(&hash->inner, data, size);
 }
 
-static void hmac_sha256_finalize(hmac_sha256_state *hash, uint8_t *out32) {
+static void hmac_sha256_finalize_wowseed(hmac_sha256_state *hash, uint8_t *out32) {
     uint8_t temp[32];
-    sha256_finalize(&hash->inner, temp);
+    sha256_finalize_wowseed(&hash->inner, temp);
     sha256_write(&hash->outer, temp, 32);
     memset(temp, 0, 32);
-    sha256_finalize(&hash->outer, out32);
+    sha256_finalize_wowseed(&hash->outer, out32);
 }
 
 #endif
