@@ -66,6 +66,15 @@ enum {
         1 / !!(sizeof(blake2b_param) == sizeof(uint64_t) * CHAR_BIT)
 };
 
+/* Avoid colliding with libsodium's BLAKE2b when both are linked into one DSO. */
+#define blake2b_init_param blake2b_init_param_wowseed
+#define blake2b_init_key   blake2b_init_key_wowseed
+#define blake2b_init       blake2b_init_wowseed
+#define blake2b_update     blake2b_update_wowseed
+#define blake2b_final      blake2b_final_wowseed
+#define blake2b_long       blake2b_long_wowseed
+#define blake2b            blake2b_wowseed
+
 /* Streaming API */
 ARGON2_LOCAL int blake2b_init(blake2b_state *S, size_t outlen);
 ARGON2_LOCAL int blake2b_init_key(blake2b_state *S, size_t outlen, const void *key,

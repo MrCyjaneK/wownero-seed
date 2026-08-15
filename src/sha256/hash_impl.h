@@ -7,6 +7,12 @@
 #ifndef _SECP256K1_HASH_IMPL_H_
 #define _SECP256K1_HASH_IMPL_H_
 
+/* Avoid colliding with other SHA256 copies when both are linked into one DSO. */
+#define sha256_initialize      sha256_initialize_wowseed
+#define sha256_finalize        sha256_finalize_wowseed
+#define hmac_sha256_initialize hmac_sha256_initialize_wowseed
+#define hmac_sha256_finalize   hmac_sha256_finalize_wowseed
+
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>

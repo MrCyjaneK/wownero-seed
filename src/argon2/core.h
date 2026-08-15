@@ -20,6 +20,14 @@
 
 #include "argon2.h"
 
+/* Avoid colliding with other Argon2 copies when both are linked into one DSO. */
+#define validate_inputs    validate_inputs_wowseed
+#define initial_hash       initial_hash_wowseed
+#define fill_first_blocks  fill_first_blocks_wowseed
+#define initialize         initialize_wowseed
+#define finalize           finalize_wowseed
+#define fill_memory_blocks fill_memory_blocks_wowseed
+
 #define CONST_CAST(x) (x)(uintptr_t)
 
 /**********************Argon2 internal constants*******************************/
