@@ -66,6 +66,14 @@ enum {
         1 / !!(sizeof(blake2b_param) == sizeof(uint64_t) * CHAR_BIT)
 };
 
+#define blake2b_init wownero_seed_blake2b_init
+#define blake2b_init_key wownero_seed_blake2b_init_key
+#define blake2b_init_param wownero_seed_blake2b_init_param
+#define blake2b_update wownero_seed_blake2b_update
+#define blake2b_final wownero_seed_blake2b_final
+#define blake2b wownero_seed_blake2b
+#define blake2b_long wownero_seed_blake2b_long
+
 /* Streaming API */
 ARGON2_LOCAL int blake2b_init(blake2b_state *S, size_t outlen);
 ARGON2_LOCAL int blake2b_init_key(blake2b_state *S, size_t outlen, const void *key,
